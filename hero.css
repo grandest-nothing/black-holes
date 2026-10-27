@@ -42,3 +42,4 @@
   #nav .logo>svg{transition:transform .8s cubic-bezier(.2,.9,.25,1),opacity 1.6s cubic-bezier(.22,.61,.36,1)}
   #nav.surface-collide .logo>svg{animation:icon-collide 2.15s cubic-bezier(.2,.9,.25,1) forwards}
 }
+#accretion-details h2,#type-details h2{font-size:clamp(1.2rem,2.2vw,1.65rem);line-height:1.15;margin-bottom:.8rem}
