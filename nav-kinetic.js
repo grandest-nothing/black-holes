@@ -21,10 +21,10 @@
     .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
     .nav-rail-stack { position:fixed; right:52px; top:0; bottom:0; left:auto; width:220px; z-index:96; pointer-events:none; }
     .nav-rail-item { position:absolute; right:0; top:0; display:inline-flex; align-items:center; justify-content:flex-end; text-decoration:none; text-align:right; white-space:nowrap; pointer-events:auto; cursor:pointer; transform-origin:right center; will-change:transform,opacity; }
-    .nav-rail-label { font-weight:800; font-size:clamp(.58rem,.72vw,.66rem); text-transform:uppercase; letter-spacing:.14em; color:#fff; text-shadow:none; filter:none; }
+    .nav-rail-label { font-weight:900; font-size:clamp(.78rem,1.1vw,.92rem); text-transform:uppercase; letter-spacing:.16em; color:#fff; text-shadow:none; filter:none; }
     @media(max-width:860px) {
       .nav-rail-stack { right:42px; width:160px; }
-      .nav-rail-label { font-size:.54rem; letter-spacing:.1em; }
+      .nav-rail-label { font-size:.7rem; letter-spacing:.1em; }
     }
     @media(prefers-reduced-motion:reduce) {
       .nav-kinetic-letter,.nav-rail-item { transition:none!important; animation:none!important; transform:none!important; }
@@ -120,7 +120,7 @@
       railStack.style.pointerEvents='auto';
     }
     const stackTopBase=96;
-    const stackGap=18;
+    const stackGap=22;
     const bottomEntryY=vh - 54;
     railItems.forEach(({link},idx)=>{
       const sec=items[idx].section;
