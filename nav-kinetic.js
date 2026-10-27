@@ -21,11 +21,11 @@
     .nav-kinetic-item.is-current { color:#fff; text-shadow:0 0 12px rgba(255,173,107,.6); }
     .nav-kinetic-word { display:inline-block; overflow:visible; vertical-align:bottom; }
     .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
-    .nav-rail-anchor { position:fixed; right:48px; top:0; z-index:96; pointer-events:none; display:flex; flex-direction:column; align-items:flex-end; will-change:transform; transform:translate3d(0,0,0); }
+    .nav-rail-anchor { position:fixed; right:56px; top:0; z-index:96; pointer-events:none; display:flex; flex-direction:column; align-items:flex-end; will-change:transform; transform:translate3d(0,0,0); }
     .nav-rail-word-wrap { position:absolute; right:0; top:0; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end; white-space:nowrap; }
     .nav-rail-letter { display:inline-block; font-weight:900; font-size:clamp(1.1rem,1.8vw,1.65rem); text-transform:uppercase; letter-spacing:.18em; color:#fff; text-shadow:0 0 16px rgba(255,173,107,.85), 0 0 28px rgba(255,138,61,.45); will-change:transform,opacity,filter; transform-origin:center right; transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s,filter .28s; }
     @media(max-width:860px) {
-      .nav-rail-anchor { right:40px; }
+      .nav-rail-anchor { right:44px; }
       .nav-rail-letter { font-size:1.05rem; letter-spacing:.12em; }
     }
     @media(prefers-reduced-motion:reduce) {
@@ -86,7 +86,12 @@
     const mid=y+vh*0.45;
     let closestIndex=0;
     let closestDist=Infinity;
-    items.forEach(({section},idx)=>{\n      const top=section.offsetTop;\n      const height=section.offsetHeight;\n      const dist=Math.abs(mid-(top+height/2));\n      if(dist<closestDist){closestDist=dist;closestIndex=idx;}\n    });
+    items.forEach(({section},idx)=>{
+      const top=section.offsetTop;
+      const height=section.offsetHeight;
+      const dist=Math.abs(mid-(top+height/2));
+      if(dist<closestDist){closestDist=dist;closestIndex=idx;}
+    });
     activeIndex=closestIndex;
     items.forEach(({a,label},secIdx)=>{
       if(!a)return;
