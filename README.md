@@ -42,25 +42,7 @@ Primordial black holes are presented as hypothetical, rather than as a confirmed
 
 Black holes are only part of the story. Drag a carousel of glowing objects through the space between two wormhole mouths
 
-1. White dwarf
-2. Neutron star
-3. Pulsar
-4. Magnetar
-5. Strange quark star
-6. Boson star
-7. Gravastar
-
-Objects become smaller as they move away from the center, then pinch and swirl through the portals at the edges. Hover or focus to open their explanations, or tap to keep the details open
-
 ## Built to feel connected
-
-1. A continuous black hole journey, from the hero to the scroll rail and finally the footer
-2. A navigation title that is absorbed into its icon at the same pace as the hero transition
-3. A brighter drifting starfield with gentle floating motion and soft twinkling
-4. Explanations that appear after a short hover, with illustrations, captions, and science links
-5. A carousel with dragging, touch swiping, clickable wormhole controls, and keyboard navigation
-6. Orbital LinkedIn and GitHub graphics in the footer, with subtle motion and hover glow
-7. Responsive layouts and support for reduced motion preferences
 
 ## A visual experience, with scientific context
 
@@ -91,10 +73,8 @@ The page starts in `index.html`. The main loader is `script.js`, with dedicated 
 
 </details>
 
-## Meet the creator
+## MEET THE CREATOR
 
-Created by Rodolfo Ramos
+[LINKEDIN](https://www.linkedin.com/in/rodolfo-ramosgn/) · [INSTAGRAM](https://www.instagram.com/grandest__nothing/)
 
-[MEET THE CREATOR](https://www.linkedin.com/in/rodolfo-ramosgn/) · [GITHUB REPO](https://github.com/grandest-nothing/black-holes)
-
-<p align="center">Built with curiosity and gravity</p>
+<p align="center">BUILT WITH CURIOSITY AND GRAVITY</p>
