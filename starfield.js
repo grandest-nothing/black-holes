@@ -1,7 +1,7 @@
 (() => {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.75';
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.9';
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const style = document.createElement('style');
@@ -20,7 +20,7 @@
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     seed = 7341;
-    stars = Array.from({length: Math.min(850, Math.round(w*h/2100))}, () => ({x:rand(), y:rand(), z:.2+rand()*.8, r:.3+rand()*.65, a:.08+rand()*.3, phase:rand()*6.283}));
+    stars = Array.from({length: Math.min(850, Math.round(w*h/2100))}, () => ({x:rand(), y:rand(), z:.2+rand()*.8, r:.3+rand()*.65, a:.1+rand()*.34, phase:rand()*6.283}));
     lastBoxes = -Infinity;
   }
   const wrap = (n, size) => ((n % size) + size) % size;
