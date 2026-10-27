@@ -17,6 +17,9 @@
   control.value='0'; control.setAttribute('aria-label','Page scroll position');
   control.setAttribute('aria-controls','top');
   rail.appendChild(control);
+  const logo=document.querySelector('.nav .logo');
+  const logoText=logo?.querySelector(':scope > span');
+  const logoIcon=logo?.querySelector(':scope > svg');
   const footer=document.querySelector('.footer');
   const signature=footer?.lastElementChild;
   let footerSlot=null;
@@ -36,6 +39,9 @@
     .bh-portal { position:fixed; left:0; top:0; z-index:90; pointer-events:none; transform-origin:0 0; }
     .bh-portal>.bh { width:100%!important; height:100%!important; margin:0!important; }
     .bh-portal.is-compact>.bh { animation:none!important; }
+    .nav .logo { position:relative; }
+    .nav .logo>svg { position:relative; z-index:2; flex-shrink:0; }
+    .nav .logo>span { position:relative; z-index:1; transform-origin:0 50%; will-change:transform,opacity; }
     .bh-rail { position:fixed; right:4px; top:96px; bottom:24px; width:44px; z-index:95; opacity:0; pointer-events:none; }
     .bh-rail::before { content:''; position:absolute; left:21px; top:0; bottom:0; width:1px; background:rgba(255,138,61,.15); }
     .bh-rail input { appearance:none; -webkit-appearance:none; writing-mode:vertical-lr; direction:ltr; position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:ns-resize; touch-action:none; }
@@ -69,6 +75,14 @@
     if (!width || !height) return;
     const boundary=Math.max(1,overview.getBoundingClientRect().top+y-96);
     const p=clamp(y/boundary);
+    if(logo&&logoText&&logoIcon){
+      const icon=logoIcon.getBoundingClientRect(),brand=logo.getBoundingClientRect();
+      const center=icon.left-brand.left+icon.width/2;
+      const pull=(center-logoText.offsetLeft-logoText.offsetWidth*.01)*p;
+      logoText.style.opacity=String(1-p);
+      logoText.style.transform=reduced.matches?'none':`translate3d(${pull}px,0,0) rotate(${-24*p}deg) scale(${1-.98*p},${1-.88*p})`;
+      logoText.style.filter=reduced.matches?'none':`blur(${p*1.4}px)`;
+    }
     const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
     const progress=clamp(y/max);
     const size=44;
