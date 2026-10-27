@@ -1,9 +1,7 @@
 <h1 align="center">
-  <a href="https://black-holes-gamma.vercel.app/#top">Black Holes</a>
+  <a href="https://black-holes-gamma.vercel.app/#top"> DIVE INTO BLACK HOLES</a>
 </h1>
 
-
-<h3 align="center">Dive into black holes.</h3>
 
 ## Features
 - Dark design system with bold typography (CSS variables)
