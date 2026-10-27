@@ -43,6 +43,11 @@
 
   const bh = document.createElement('script');
   bh.src = 'blackhole.js';
+  bh.onload = () => {
+    const morph = document.createElement('script');
+    morph.src = 'scroll-morph.js';
+    document.body.appendChild(morph);
+  };
   document.body.appendChild(bh);
   const scrollCue = document.createElement('script');
   scrollCue.src = 'scroll-cue.js';
