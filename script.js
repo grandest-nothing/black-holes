@@ -47,4 +47,7 @@
   const scrollCue = document.createElement('script');
   scrollCue.src = 'scroll-cue.js';
   document.body.appendChild(scrollCue);
+  const starfield = document.createElement('script');
+  starfield.src = 'starfield.js';
+  document.body.appendChild(starfield);
 })();
