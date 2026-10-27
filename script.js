@@ -28,4 +28,8 @@
     const t = document.querySelector(l.getAttribute('href'));
     if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
   }));
+
+  const bh = document.createElement('script');
+  bh.src = 'blackhole.js';
+  document.body.appendChild(bh);
 })();

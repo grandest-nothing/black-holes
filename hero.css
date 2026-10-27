@@ -5,19 +5,21 @@
 .hero .accent{font-style:normal;background:linear-gradient(100deg,#ffb36b,var(--accent) 45%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero .lead{margin:1.75rem 0 2.5rem;max-width:34ch;text-align:left}
 .hero__visual{position:relative;z-index:1;display:flex;justify-content:center}
-.bh{position:relative;width:min(100%,640px);aspect-ratio:1;perspective:1200px;animation:bob 6s ease-in-out infinite;will-change:transform}
+.bh{position:relative;width:min(100%,680px);aspect-ratio:1;perspective:1200px;animation:bob 6s ease-in-out infinite;will-change:transform}
 @keyframes bob{0%,100%{transform:translateY(-16px)}50%{transform:translateY(16px)}}
-.bh__glow{position:absolute;inset:-5%;border-radius:50%;background:radial-gradient(circle,rgba(255,138,61,.28),rgba(124,92,255,.14) 45%,transparent 70%);filter:blur(30px)}
+.bh__glow{position:absolute;inset:-5%;border-radius:50%;background:radial-gradient(circle,rgba(255,138,61,.26),rgba(255,90,20,.1) 40%,transparent 68%);filter:blur(30px)}
 .bh__halo{position:absolute;inset:28%;border-radius:50%;border:5px solid #ffd9b0;box-shadow:0 0 50px 12px rgba(255,138,61,.55),inset 0 0 50px rgba(255,138,61,.45)}
 .bh__core{position:absolute;inset:31%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#16161d,#000 62%);box-shadow:inset 0 0 40px #000,0 0 30px 6px rgba(0,0,0,.9)}
-.bh__scene{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(70deg) rotateZ(-14deg);animation:sway 16s ease-in-out infinite alternate}
-@keyframes sway{from{transform:rotateX(72deg) rotateZ(-14deg)}to{transform:rotateX(60deg) rotateZ(10deg)}}
-.bh__disk{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#ff8a3d,#ffe9d2 18%,#ff8a3d 38%,#7c5cff 62%,#ff6a1f 84%,#ff8a3d);-webkit-mask:radial-gradient(closest-side,transparent 37%,#000 42%,#000 66%,transparent 100%);mask:radial-gradient(closest-side,transparent 37%,#000 42%,#000 66%,transparent 100%);animation:diskspin 24s linear infinite;filter:blur(1px)}
+.bh__scene{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(70deg) rotateZ(-14deg)}
+.bh__disk{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#ff8a3d,#ffe9d2 18%,#ff8a3d 38%,#c2410c 62%,#ff6a1f 84%,#ff8a3d);-webkit-mask:radial-gradient(closest-side,transparent 37%,#000 42%,#000 66%,transparent 100%);mask:radial-gradient(closest-side,transparent 37%,#000 42%,#000 66%,transparent 100%);animation:diskspin 24s linear infinite;filter:blur(1px)}
 .bh__disk--inner{inset:12%;opacity:.9;animation-duration:14s;animation-direction:reverse;filter:blur(3px)}
 @keyframes diskspin{to{transform:rotateZ(360deg)}}
+.bh__canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.bh--gl{width:min(138%,960px);aspect-ratio:1.75/1;margin:0 -19%}
+.bh--gl .bh__glow,.bh--gl .bh__halo,.bh--gl .bh__core,.bh--gl .bh__scene{display:none}
 .hero .scroll-cue{position:absolute;left:50%;bottom:2rem;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.35em;color:var(--muted);animation:cue 2.4s ease-in-out infinite;z-index:3}
 .scroll-cue__icon{animation:cueicon 2.4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,138,61,.6))}
 @keyframes cue{0%,100%{opacity:.45}50%{opacity:1}}
 @keyframes cueicon{0%,100%{transform:translateY(0) scale(.9)}50%{transform:translateY(8px) scale(1.1)}}
-@media(max-width:860px){.hero{grid-template-columns:1fr;gap:0;padding-top:6.5rem;padding-bottom:6rem}.hero__visual{margin-top:1rem}.bh{width:min(90%,420px)}.hero h1{font-size:clamp(3rem,15vw,5.5rem)}}
-@media(prefers-reduced-motion:reduce){.bh,.bh__scene,.bh__disk,.scroll-cue,.scroll-cue__icon{animation:none}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:0;padding-top:6.5rem;padding-bottom:6rem}.hero__visual{margin-top:1rem}.bh{width:min(94%,440px)}.bh.bh--gl{width:106%;margin:0 -3%}.hero h1{font-size:clamp(3rem,15vw,5.5rem)}}
+@media(prefers-reduced-motion:reduce){.bh,.bh__disk,.scroll-cue,.scroll-cue__icon{animation:none}}
