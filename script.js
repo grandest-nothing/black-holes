@@ -133,3 +133,9 @@
   ambient.src = 'ambient-audio.js';
   document.body.appendChild(ambient);
 })();
+
+(() => {
+  const mobile = document.createElement('script');
+  mobile.src = 'mobile-panels.js';
+  document.body.appendChild(mobile);
+})();
