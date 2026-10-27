@@ -81,6 +81,15 @@
     if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
   }));
 
+  document.querySelectorAll('.footer .footer__links').forEach(el => el.remove());
+  const footerLinkStyle = document.createElement('style');
+  footerLinkStyle.textContent = `
+    .footer.bh-footer-docking .footer-platform { position:relative; z-index:101; pointer-events:auto; cursor:pointer; }
+    .footer.bh-footer-docking .footer-platform > .footer-platform-label { pointer-events:auto; cursor:pointer; }
+    .footer.bh-footer-docking .footer-platform:focus-visible .footer-platform-label { color:var(--accent); }
+  `;
+  document.head.appendChild(footerLinkStyle);
+
   const bh = document.createElement('script');
   bh.src = 'blackhole.js';
   bh.onload = () => {
