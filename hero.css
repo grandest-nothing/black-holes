@@ -23,3 +23,5 @@
 @keyframes cueicon{0%,100%{transform:translateY(0) scale(.9)}50%{transform:translateY(8px) scale(1.1)}}
 @media(max-width:860px){.hero{grid-template-columns:1fr;gap:0;padding-top:6.5rem;padding-bottom:6rem}.hero__visual{margin-top:1rem}.bh{width:min(94%,440px)}.bh.bh--gl{width:106%;margin:0 -3%}.hero h1{font-size:clamp(3rem,15vw,5.5rem)}}
 @media(prefers-reduced-motion:reduce){.bh,.bh__disk,.scroll-cue,.scroll-cue__icon{animation:none}}
+.footer{position:relative;z-index:96;pointer-events:none}
+.footer .footer-platform{pointer-events:auto}
