@@ -61,6 +61,9 @@
     const fluid = document.createElement('script');
     fluid.src = 'fluid-cursor.js';
     document.body.appendChild(fluid);
+    const types = document.createElement('script');
+    types.src = 'types.js';
+    document.body.appendChild(types);
   };
   document.body.appendChild(cards);
 })();
