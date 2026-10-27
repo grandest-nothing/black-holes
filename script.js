@@ -28,7 +28,7 @@
     const buttonRect = backToSurface.getBoundingClientRect();
     const iconRect = logoIcon.getBoundingClientRect();
     const iconCenterX = iconRect.left + iconRect.width / 2;
-    const targetCenterX = buttonRect.left - 14;
+    const targetCenterX = buttonRect.right + iconRect.width / 2 + 10;
     const iconShift = targetCenterX - iconCenterX;
     nav.style.setProperty('--icon-shift', `${iconShift}px`);
     logoIcon.style.transform = `translate3d(${iconShift}px,0,0)`;
@@ -50,7 +50,7 @@
           nav.classList.remove('surface-collide');
           void nav.offsetWidth;
           nav.classList.add('surface-collide');
-          setTimeout(() => nav.classList.remove('surface-collide'), 1400);
+          setTimeout(() => nav.classList.remove('surface-collide'), 2200);
         } else {
           logoIcon.style.transform = '';
           logoIcon.style.opacity = '';
