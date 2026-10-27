@@ -127,3 +127,9 @@
   };
   document.body.appendChild(exploration);
 })();
+
+(() => {
+  const ambient = document.createElement('script');
+  ambient.src = 'ambient-audio.js';
+  document.body.appendChild(ambient);
+})();
