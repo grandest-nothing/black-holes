@@ -44,4 +44,7 @@
   const bh = document.createElement('script');
   bh.src = 'blackhole.js';
   document.body.appendChild(bh);
+  const scrollCue = document.createElement('script');
+  scrollCue.src = 'scroll-cue.js';
+  document.body.appendChild(scrollCue);
 })();
