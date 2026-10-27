@@ -142,20 +142,19 @@
       const isCurrent=idx===activeIndex;
       const distToBH=Math.abs(targetY-blackHoleCenterY);
       const proximity=clamp(1-distToBH/110);
-      let isVisible=true;
-      if(!isPinned){
-        if(travelProgress<=0.02){
-          isVisible=false;
+      let isVisible=false;
+      if(isPinned){
+        isVisible=true;
+      }else if(travelProgress>0.04){
+        if(idx===0){
+          isVisible=true;
         }else{
-          const prevItem=items[idx-1];
-          if(prevItem){
-            const prevSecTop=prevItem.section.offsetTop;
-            const prevStartTrigger=prevSecTop - vh*0.88;
-            const prevEndTrigger=prevSecTop + prevItem.section.offsetHeight*0.25;
-            const prevTravel=clamp((y-prevStartTrigger)/Math.max(1,prevEndTrigger-prevStartTrigger));
-            if(prevTravel<0.45){
-              isVisible=false;
-            }
+          const prevSec=items[idx-1].section;
+          const prevStart=prevSec.offsetTop - vh*0.88;
+          const prevEnd=prevSec.offsetTop + prevSec.offsetHeight*0.25;
+          const prevTravel=clamp((y-prevStart)/Math.max(1,prevEnd-prevStart));
+          if(prevTravel>=0.85){
+            isVisible=true;
           }
         }
       }
