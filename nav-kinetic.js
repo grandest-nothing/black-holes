@@ -19,12 +19,12 @@
     .nav-kinetic-item.is-current { color:#fff; }
     .nav-kinetic-word { display:inline-block; overflow:visible; vertical-align:bottom; }
     .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
-    .nav-rail-stack { position:fixed; right:52px; top:108px; bottom:36px; z-index:96; pointer-events:auto; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end; }
-    .nav-rail-item { display:inline-flex; align-items:center; justify-content:flex-end; text-decoration:none; text-align:right; white-space:nowrap; cursor:pointer; transform-origin:right center; will-change:transform,opacity; transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .22s; }
-    .nav-rail-label { font-weight:800; font-size:clamp(.72rem,1vw,.88rem); text-transform:uppercase; letter-spacing:.14em; color:#fff; text-shadow:none; filter:none; }
+    .nav-rail-stack { position:fixed; right:52px; top:0; bottom:0; left:auto; width:220px; z-index:96; pointer-events:none; }
+    .nav-rail-item { position:absolute; right:0; top:0; display:inline-flex; align-items:center; justify-content:flex-end; text-decoration:none; text-align:right; white-space:nowrap; pointer-events:auto; cursor:pointer; transform-origin:right center; will-change:transform,opacity; }
+    .nav-rail-label { font-weight:900; font-size:clamp(.78rem,1.1vw,.92rem); text-transform:uppercase; letter-spacing:.16em; color:#fff; text-shadow:none; filter:none; }
     @media(max-width:860px) {
-      .nav-rail-stack { right:42px; }
-      .nav-rail-label { font-size:.68rem; letter-spacing:.1em; }
+      .nav-rail-stack { right:42px; width:160px; }
+      .nav-rail-label { font-size:.7rem; letter-spacing:.1em; }
     }
     @media(prefers-reduced-motion:reduce) {
       .nav-kinetic-letter,.nav-rail-item { transition:none!important; animation:none!important; transform:none!important; }
@@ -48,7 +48,7 @@
   });
   const railStack=document.createElement('nav');
   railStack.className='nav-rail-stack';
-  railStack.setAttribute('aria-label','Section navigation rail');
+  railStack.setAttribute('aria-label','Sticky section stack navigation');
   const railItems=items.map(({id,label})=>{
     const link=document.createElement('a');
     link.className='nav-rail-item';
@@ -126,22 +126,40 @@
       railStack.style.opacity=String(heroP);
       railStack.style.pointerEvents='auto';
     }
-    railItems.forEach(({link})=>{
-      const rect=link.getBoundingClientRect();
-      const itemCenterY=rect.top+rect.height/2;
-      const dist=Math.abs(itemCenterY-blackHoleCenterY);
-      const reach=120;
-      const proximity=clamp(1-dist/reach);
+    const stackTopBase=96;
+    const stackGap=22;
+    railItems.forEach(({link},idx)=>{
+      const sec=items[idx].section;
+      const secTop=sec.offsetTop;
+      const secHeight=sec.offsetHeight;
+      const rawNaturalY=secTop-y+vh*0.35;
+      const topPinnedY=stackTopBase + idx*stackGap;
+      const bottomEntryY=vh - 60;
+      const targetY=Math.max(topPinnedY,Math.min(bottomEntryY,rawNaturalY));
+      const distToBH=Math.abs(targetY-blackHoleCenterY);
+      const isPinned=rawNaturalY<=topPinnedY;
+      const isPastActive=idx<activeIndex;
+      const isCurrent=idx===activeIndex;
+      const proximity=clamp(1-distToBH/110);
+      let op=0.28;
+      let scale=0.84;
+      if(isCurrent){
+        op=Math.max(0.85,0.45+proximity*0.55);
+        scale=Math.max(1.0,0.92+proximity*0.22);
+      }else if(isPinned){
+        op=isPastActive?0.32:0.42;
+        scale=0.82;
+      }else{
+        op=0.22+proximity*0.4;
+        scale=0.8+proximity*0.15;
+      }
       if(reduced.matches){
-        link.style.opacity=String(0.35+proximity*0.65);
-        link.style.transform='none';
+        link.style.transform=`translate3d(0,${targetY}px,0)`;
+        link.style.opacity=String(op);
         return;
       }
-      const op=0.28+proximity*0.72;
-      const scale=0.88+proximity*0.24;
-      const shiftX=(1-proximity)*6;
+      link.style.transform=`translate3d(0,${targetY}px,0) scale(${scale})`;
       link.style.opacity=String(op);
-      link.style.transform=`translate3d(${-shiftX}px,0,0) scale(${scale})`;
     });
   }
   let pending=false;
