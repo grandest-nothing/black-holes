@@ -25,3 +25,5 @@
 @media(prefers-reduced-motion:reduce){.bh,.bh__disk,.scroll-cue,.scroll-cue__icon{animation:none}}
 .footer{position:relative;z-index:96;pointer-events:none}
 .footer .footer-platform{pointer-events:auto}
+.nav-rail-stack{pointer-events:none!important}
+.nav-rail-stack .nav-rail-item{pointer-events:auto}
