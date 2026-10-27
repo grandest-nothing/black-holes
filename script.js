@@ -21,6 +21,7 @@
     if (!nav || !backToSurface || !logoIcon) return;
     if (!backToSurface.classList.contains('is-visible') || reducedMotion.matches) {
       logoIcon.style.transform = '';
+      logoIcon.style.opacity = '';
       nav.style.setProperty('--icon-shift', '0px');
       return;
     }
@@ -31,6 +32,7 @@
     const iconShift = targetCenterX - iconCenterX;
     nav.style.setProperty('--icon-shift', `${iconShift}px`);
     logoIcon.style.transform = `translate3d(${iconShift}px,0,0)`;
+    logoIcon.style.opacity = '0';
   };
 
   const onScroll = () => {
@@ -48,9 +50,10 @@
           nav.classList.remove('surface-collide');
           void nav.offsetWidth;
           nav.classList.add('surface-collide');
-          setTimeout(() => nav.classList.remove('surface-collide'), 1000);
+          setTimeout(() => nav.classList.remove('surface-collide'), 1400);
         } else {
           logoIcon.style.transform = '';
+          logoIcon.style.opacity = '';
           nav.style.setProperty('--icon-shift', '0px');
         }
       }
