@@ -100,23 +100,16 @@
           letEl.style.transform='none';
           return;
         }
-        const letterProgress=clamp((heroP - (lIdx/totalLetters)*0.55)/0.45);
-        if(isCur){
-          const disX=(1-letterProgress)*0 + letterProgress*(20 + (totalLetters-lIdx)*10);
-          const disY=letterProgress * (Math.sin(lIdx*1.2)*6);
-          const disRot=letterProgress * ((lIdx%2===0?1:-1)*14);
-          const disScale=Math.max(0.01,1-letterProgress*0.9);
-          const disOp=Math.max(0,1-letterProgress*1.2);
-          const blur=letterProgress*3;
-          letEl.style.transform=`translate3d(${disX}px,${disY}px,0) rotate(${disRot}deg) scale(${disScale})`;
-          letEl.style.opacity=String(disOp);
-          letEl.style.filter=blur>0?`blur(${blur}px)`:'none';
-        }else{
-          const otherDis=(1-heroP);
-          letEl.style.transform=`translate3d(0,0,0) scale(1)`;
-          letEl.style.opacity=String(0.55*otherDis);
-          letEl.style.filter='none';
-        }
+        const letterProgress=clamp((heroP - (lIdx/totalLetters)*0.45)/0.55);
+        const disX=(1-letterProgress)*0 + letterProgress*(20 + (totalLetters-lIdx)*10);
+        const disY=letterProgress * (Math.sin(lIdx*1.2 + secIdx)*6);
+        const disRot=letterProgress * (((lIdx+secIdx)%2===0?1:-1)*14);
+        const disScale=Math.max(0.01,1-letterProgress*0.9);
+        const disOp=Math.max(0,1-letterProgress*1.2);
+        const blur=letterProgress*3;
+        letEl.style.transform=`translate3d(${disX}px,${disY}px,0) rotate(${disRot}deg) scale(${disScale})`;
+        letEl.style.opacity=String(disOp);
+        letEl.style.filter=blur>0?`blur(${blur}px)`:'none';
       });
     });
     if(heroP<=0.05){

@@ -21,12 +21,12 @@
   function warp(){
     dirty=false;if(scrolling)return;
     const hit=document.elementFromPoint(point.x,point.y);
-    const el=hit?.closest('.card')||hit?.closest('.accretion-panel,h1,h2,main p,.btn,.logo,.links,.footer,.scroll-cue');
+    const el=hit?.closest('.accretion-panel, .types-panel, .cosmos-panel, .learning-card, .card, h1, h2, h3, main p, .btn, .logo, .links, .footer, .scroll-cue, .cosmos-object, .types-card, .cosmos-arrow');
     if(!el){restore();return;}
     const r=el.getBoundingClientRect();
-    if(!r.width||!r.height||r.width*r.height>250000){restore();return;}
+    if(!r.width||!r.height||r.width*r.height>480000){restore();return;}
     if(el!==target){restore();target=el;old=el.style.filter;el.classList.add('fluid-warping');}
-    filter.setAttribute('x','-16');filter.setAttribute('y','-16');filter.setAttribute('width',r.width+32);filter.setAttribute('height',r.height+32);
+    filter.setAttribute('x','-24');filter.setAttribute('y','-24');filter.setAttribute('width',r.width+48);filter.setAttribute('height',r.height+48);
     image.setAttribute('x',point.x-r.left-64);image.setAttribute('y',point.y-r.top-64);el.style.filter='url(#fluid-local-pull)';
   }
   function wake(){if(active&&!raf)raf=requestAnimationFrame(draw);}
@@ -37,8 +37,7 @@
     ctx.clearRect(0,0,224,224);ctx.save();ctx.translate(112-point.x,112-point.y);let unsettled=0;
     for(let i=0;i<nodes.length;i++){
       const p=i?nodes[i-1]:point,n=nodes[i],a=1-Math.exp(-dt/(i?30:14));n.x+=(p.x-n.x)*a;n.y+=(p.y-n.y)*a;unsettled+=Math.abs(p.x-n.x)+Math.abs(p.y-n.y);
-      if(i){const fade=1-i/nodes.length;ctx.strokeStyle='rgba(255,'+Math.round(75+fade*90)+',32,'+(fade*.5)+')';ctx.lineWidth=.4+fade*2;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.quadraticCurveTo((n.x+p.x)/2+Math.sin(ms*.003-i)*2,(n.y+p.y)/2,p.x,p.y);ctx.stroke();}
-    }
+      if(i){const fade=1-i/nodes.length;ctx.strokeStyle='rgba(255,'+Math.round(75+fade*90)+',32,'+(fade*.5)+')';ctx.lineWidth=.4+fade*2;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.quadraticCurveTo((n.x+p.x)/2+Math.sin(ms*.003-i)*2,(n.y+p.y)/2,p.x,p.y);ctx.stroke();}\n    }
     ctx.fillStyle='#050507';ctx.beginPath();ctx.arc(point.x,point.y,2.3,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ffad6bcc';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(point.x,point.y,5,3.3,-.6,0,Math.PI*2);ctx.stroke();ctx.restore();
     if(dirty&&ms-lastWarp>=50){warp();lastWarp=ms;}
     if(unsettled>.25||dirty)wake();
