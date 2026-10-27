@@ -1,7 +1,7 @@
 (() => {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.55';
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.75';
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const style = document.createElement('style');
