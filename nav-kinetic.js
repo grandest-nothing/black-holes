@@ -1,7 +1,8 @@
 (() => {
   const nav=document.getElementById('nav');
   const linksWrap=nav?.querySelector('.links');
-  if(!nav||!linksWrap)return;
+  const logoText=nav?.querySelector('.logo span');
+  if(!nav||!linksWrap||!logoText)return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const sections=[...document.querySelectorAll('main section[id]')];
   if(!sections.length)return;
@@ -19,6 +20,8 @@
     .nav-kinetic-item.is-current { color:#fff; }
     .nav-kinetic-word { display:inline-block; overflow:visible; vertical-align:bottom; }
     .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
+    .logo-word { display:inline-block; overflow:visible; vertical-align:bottom; }
+    .logo-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
     .nav-rail-stack { position:fixed; right:52px; top:0; bottom:0; left:auto; width:220px; z-index:96; pointer-events:none; }
     .nav-rail-item { position:absolute; right:0; top:0; display:inline-flex; align-items:center; justify-content:flex-end; text-decoration:none; text-align:right; white-space:nowrap; pointer-events:auto; cursor:pointer; transform-origin:right center; will-change:transform,opacity; }
     .nav-rail-label { font-weight:800; font-size:clamp(.58rem,.72vw,.66rem); text-transform:uppercase; letter-spacing:.14em; color:#fff; text-shadow:none; filter:none; }
@@ -27,25 +30,30 @@
       .nav-rail-label { font-size:.54rem; letter-spacing:.1em; }
     }
     @media(prefers-reduced-motion:reduce) {
-      .nav-kinetic-letter,.nav-rail-item { transition:none!important; animation:none!important; transform:none!important; }
+      .nav-kinetic-letter,.logo-letter,.nav-rail-item { transition:none!important; animation:none!important; transform:none!important; }
     }
   `;
   document.head.append(style);
-  items.forEach(({a,label})=>{
-    if(!a)return;
-    a.classList.add('nav-kinetic-item');
-    a.replaceChildren();
+  const makeLetters=(parent,text,className)=>{
+    parent.replaceChildren();
     const word=document.createElement('span');
-    word.className='nav-kinetic-word';
-    [...label].forEach((char,idx)=>{
+    word.className=className+'-word';
+    [...text].forEach((char,idx)=>{
       const span=document.createElement('span');
-      span.className='nav-kinetic-letter';
+      span.className=className+'-letter';
       span.textContent=char===' '?'\u00A0':char;
       span.dataset.idx=idx;
       word.append(span);
     });
-    a.append(word);
+    parent.append(word);
+    return word;
+  };
+  items.forEach(({a,label})=>{
+    if(!a)return;
+    a.classList.add('nav-kinetic-item');
+    makeLetters(a,label,'nav-kinetic');
   });
+  makeLetters(logoText,logoText.textContent.trim(),'logo');
   const railStack=document.createElement('nav');
   railStack.className='nav-rail-stack';
   railStack.setAttribute('aria-label','Sticky section stack navigation');
@@ -111,6 +119,25 @@
         letEl.style.opacity=String(disOp);
         letEl.style.filter=blur>0?`blur(${blur}px)`:'none';
       });
+    });
+    const logoLetters=logoText.querySelectorAll('.logo-letter');
+    const logoTotal=logoLetters.length;
+    logoLetters.forEach((letEl,lIdx)=>{
+      if(reduced.matches){
+        letEl.style.opacity='1';
+        letEl.style.transform='none';
+        return;
+      }
+      const letterProgress=clamp((heroP - ((logoTotal-1-lIdx)/logoTotal)*0.45)/0.55);
+      const disX=letterProgress * -(20 + (lIdx+1)*10);
+      const disY=letterProgress * (Math.sin(lIdx*1.2)*6);
+      const disRot=letterProgress * ((lIdx%2===0?-1:1)*14);
+      const disScale=Math.max(0.01,1-letterProgress*0.9);
+      const disOp=Math.max(0,1-letterProgress*1.2);
+      const blur=letterProgress*3;
+      letEl.style.transform=`translate3d(${disX}px,${disY}px,0) rotate(${disRot}deg) scale(${disScale})`;
+      letEl.style.opacity=String(disOp);
+      letEl.style.filter=blur>0?`blur(${blur}px)`:'none';
     });
     if(heroP<=0.05){
       railStack.style.opacity='0';
