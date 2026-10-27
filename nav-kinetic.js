@@ -19,24 +19,17 @@
     .nav-kinetic-pill { position:absolute; pointer-events:none; border-radius:999px; background:radial-gradient(circle at 50% 50%, rgba(255,138,61,.22), rgba(124,92,255,.08) 70%, transparent); border:1px solid rgba(255,173,107,.35); box-shadow:0 0 16px rgba(255,138,61,.28); transform-origin:center; will-change:transform,opacity,width,height; transition:opacity .35s; }
     .nav-kinetic-item { position:relative; display:inline-block; font-weight:800; font-size:.85rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); transition:color .25s; padding:.4rem .2rem; }
     .nav-kinetic-item.is-current { color:#fff; text-shadow:0 0 12px rgba(255,173,107,.6); }
-    .nav-kinetic-word { display:inline-block; overflow:hidden; vertical-align:bottom; }
-    .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .35s var(--ease),opacity .35s,filter .35s; }
-    .nav-kinetic-item.is-current .nav-kinetic-letter { animation:kinetic-letter-float 3.2s ease-in-out infinite alternate; }
-    @keyframes kinetic-letter-float {
-      0% { transform:translate3d(0,0,0) rotate(0deg); }
-      50% { transform:translate3d(0,-1.5px,0) rotate(1deg); }
-      100% { transform:translate3d(0,1px,0) rotate(-1deg); }
+    .nav-kinetic-word { display:inline-block; overflow:visible; vertical-align:bottom; }
+    .nav-kinetic-letter { display:inline-block; will-change:transform,opacity,filter; transform-origin:center 70%; transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s; }
+    .nav-rail-anchor { position:fixed; right:48px; top:0; z-index:96; pointer-events:none; display:flex; flex-direction:column; align-items:flex-end; will-change:transform; transform:translate3d(0,0,0); }
+    .nav-rail-word-wrap { position:absolute; right:0; top:0; transform:translateY(-50%); display:flex; align-items:center; justify-content:flex-end; white-space:nowrap; }
+    .nav-rail-letter { display:inline-block; font-weight:900; font-size:clamp(1.1rem,1.8vw,1.65rem); text-transform:uppercase; letter-spacing:.18em; color:#fff; text-shadow:0 0 16px rgba(255,173,107,.85), 0 0 28px rgba(255,138,61,.45); will-change:transform,opacity,filter; transform-origin:center right; transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s,filter .28s; }
+    @media(max-width:860px) {
+      .nav-rail-anchor { right:40px; }
+      .nav-rail-letter { font-size:1.05rem; letter-spacing:.12em; }
     }
-    .nav-kinetic-stack { position:fixed; right:20px; top:50%; transform:translateY(-50%); z-index:92; display:flex; flex-direction:column; align-items:flex-end; gap:1.4rem; pointer-events:auto; mix-blend-mode:difference; }
-    .nav-kinetic-stack-item { position:relative; display:flex; align-items:center; gap:.75rem; text-decoration:none; color:#a6a6b3; font-weight:900; font-size:clamp(.75rem,1.2vw,1rem); letter-spacing:.18em; text-transform:uppercase; transform-origin:right center; will-change:transform,opacity,filter; transition:color .3s; }
-    .nav-kinetic-stack-item .stack-number { font-size:.65rem; color:var(--accent); font-weight:800; letter-spacing:.1em; opacity:.85; }
-    .nav-kinetic-stack-item .stack-bar { width:22px; height:1px; background:#ffffff30; transition:width .35s var(--ease),background .35s; }
-    .nav-kinetic-stack-item.is-current { color:#fff; text-shadow:0 0 18px rgba(255,173,107,.85); }
-    .nav-kinetic-stack-item.is-current .stack-bar { width:48px; background:linear-gradient(90deg,var(--accent2),var(--accent)); box-shadow:0 0 8px var(--accent); }
-    .nav-kinetic-stack-item:hover { color:#fff; }
-    @media(max-width:1020px) { .nav-kinetic-stack { display:none; } }
     @media(prefers-reduced-motion:reduce) {
-      .nav-kinetic-pill,.nav-kinetic-letter,.nav-kinetic-stack-item { transition:none!important; animation:none!important; transform:none!important; }
+      .nav-kinetic-pill,.nav-kinetic-letter,.nav-rail-letter { transition:none!important; animation:none!important; transform:none!important; }
     }
   `;
   document.head.append(style);
@@ -55,83 +48,80 @@
       const span=document.createElement('span');
       span.className='nav-kinetic-letter';
       span.textContent=char===' '?'\u00A0':char;
-      span.style.transitionDelay=(idx*22)+'ms';
-      span.style.animationDelay=(idx*90)+'ms';
+      span.dataset.idx=idx;
       word.append(span);
     });
     a.append(word);
   });
-  const stack=document.createElement('nav');
-  stack.className='nav-kinetic-stack';
-  stack.setAttribute('aria-label','Section jump');
-  const stackItems=items.map(({id,label},idx)=>{
-    const link=document.createElement('a');
-    link.className='nav-kinetic-stack-item';
-    link.href='#'+id;
-    link.setAttribute('aria-label',`Jump to ${label}`);
-    const num=document.createElement('span');
-    num.className='stack-number';
-    num.textContent='0'+(idx+1);
-    const text=document.createElement('span');
-    text.className='stack-label';
-    text.textContent=label;
-    const bar=document.createElement('span');
-    bar.className='stack-bar';
-    bar.setAttribute('aria-hidden','true');
-    link.append(num,text,bar);
-    stack.append(link);
-    link.addEventListener('click',e=>{
-      const t=document.getElementById(id);
-      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  const railAnchor=document.createElement('div');
+  railAnchor.className='nav-rail-anchor';
+  railAnchor.setAttribute('aria-hidden','true');
+  const railWordWraps=items.map(({label})=>{
+    const wrap=document.createElement('div');
+    wrap.className='nav-rail-word-wrap';
+    const letters=[...label].map((char,idx)=>{
+      const span=document.createElement('span');
+      span.className='nav-rail-letter';
+      span.textContent=char===' '?'\u00A0':char;
+      span.dataset.idx=idx;
+      wrap.append(span);
+      return span;
     });
-    return {link,id,label};
+    railAnchor.append(wrap);
+    return {wrap,letters,label};
   });
-  document.body.append(stack);
+  document.body.append(railAnchor);
   let activeIndex=-1;
   const clamp=(n,min=0,max=1)=>Math.max(min,Math.min(max,n));
   function updateKinetic(){
     const y=window.scrollY;
     const vh=innerHeight;
+    const overview=document.getElementById('overview');
+    const heroBoundary=overview?Math.max(1,overview.getBoundingClientRect().top+y-96):vh*0.8;
+    const heroP=clamp(y/heroBoundary);
+    const maxScroll=Math.max(1,document.documentElement.scrollHeight-vh);
+    const scrollProgress=clamp(y/maxScroll);
+    const blackHoleCenterY=108+scrollProgress*Math.max(1,vh-144);
+    railAnchor.style.transform=`translate3d(0,${blackHoleCenterY}px,0)`;
     const mid=y+vh*0.45;
     let closestIndex=0;
     let closestDist=Infinity;
-    const positions=items.map(({section},idx)=>{
-      const top=section.offsetTop;
-      const height=section.offsetHeight;
-      const dist=Math.abs(mid-(top+height/2));
-      if(dist<closestDist){closestDist=dist;closestIndex=idx;}
-      const enter=top-vh*0.5;
-      const exit=top+height-vh*0.2;
-      const progress=clamp((y-enter)/Math.max(1,exit-enter));
-      return {top,height,progress};
-    });
+    items.forEach(({section},idx)=>{\n      const top=section.offsetTop;\n      const height=section.offsetHeight;\n      const dist=Math.abs(mid-(top+height/2));\n      if(dist<closestDist){closestDist=dist;closestIndex=idx;}\n    });
     activeIndex=closestIndex;
-    items.forEach(({a},idx)=>{
+    items.forEach(({a,label},secIdx)=>{
       if(!a)return;
-      const isCur=idx===activeIndex;
+      const isCur=secIdx===activeIndex;
       a.classList.toggle('is-current',isCur);
       a.setAttribute('aria-current',isCur?'true':'false');
-      const offset=idx-activeIndex;
-      if(!reduced.matches){
-        const letters=a.querySelectorAll('.nav-kinetic-letter');
-        letters.forEach((letEl,lIdx)=>{
-          if(isCur){
-            letEl.style.transform='translate3d(0,0,0) scale(1.08)';
-            letEl.style.filter='none';
-            letEl.style.opacity='1';
-          }else{
-            const shiftX=offset*2.5;
-            const shiftY=Math.abs(offset)*1.2;
-            const scale=Math.max(0.88,1-Math.abs(offset)*0.06);
-            letEl.style.transform=`translate3d(${shiftX}px,${shiftY}px,0) scale(${scale})`;
-            letEl.style.filter='none';
-            letEl.style.opacity='0.62';
-          }
-        });
-      }
+      const navbarLetters=a.querySelectorAll('.nav-kinetic-letter');
+      const totalLetters=label.length;
+      navbarLetters.forEach((letEl,lIdx)=>{
+        if(reduced.matches){
+          letEl.style.opacity=isCur?'1':'0.6';
+          letEl.style.transform='none';
+          return;
+        }
+        const letterProgress=clamp((heroP - (lIdx/totalLetters)*0.55)/0.45);
+        if(isCur){
+          const disX=(1-letterProgress)*0 + letterProgress*(24 + (totalLetters-lIdx)*12);
+          const disY=letterProgress * (Math.sin(lIdx*1.2)*8);
+          const disRot=letterProgress * ((lIdx%2===0?1:-1)*18);
+          const disScale=Math.max(0.01,1-letterProgress*0.9);
+          const disOp=Math.max(0,1-letterProgress*1.2);
+          const blur=letterProgress*4;
+          letEl.style.transform=`translate3d(${disX}px,${disY}px,0) rotate(${disRot}deg) scale(${disScale})`;
+          letEl.style.opacity=String(disOp);
+          letEl.style.filter=blur>0?`blur(${blur}px)`:'none';
+        }else{
+          const otherDis=(1-heroP);
+          letEl.style.transform=`translate3d(0,0,0) scale(1)`;
+          letEl.style.opacity=String(0.55*otherDis);
+          letEl.style.filter='none';
+        }
+      });
     });
     const curA=items[activeIndex]?.a;
-    if(curA){
+    if(curA && heroP<0.95){
       const trackRect=linksWrap.getBoundingClientRect();
       const aRect=curA.getBoundingClientRect();
       if(aRect.width>0){
@@ -139,7 +129,7 @@
         const top=aRect.top-trackRect.top-4;
         const w=aRect.width+20;
         const h=aRect.height+8;
-        pill.style.opacity='1';
+        pill.style.opacity=String(1-heroP);
         pill.style.transform=`translate3d(${left}px,${top}px,0)`;
         pill.style.width=w+'px';
         pill.style.height=h+'px';
@@ -147,17 +137,32 @@
     }else{
       pill.style.opacity='0';
     }
-    stackItems.forEach(({link},idx)=>{
-      const isCur=idx===activeIndex;
-      link.classList.toggle('is-current',isCur);
-      if(reduced.matches)return;
-      const diff=idx-activeIndex;
-      const scale=isCur?1.18:Math.max(0.72,1-Math.abs(diff)*0.16);
-      const shiftX=isCur?0:(Math.abs(diff)*14);
-      const shiftY=diff*6;
-      const op=isCur?1:Math.max(0.25,0.7-Math.abs(diff)*0.2);
-      link.style.transform=`translate3d(${shiftX}px,${shiftY}px,0) scale(${scale})`;
-      link.style.opacity=String(op);
+    railWordWraps.forEach(({wrap,letters,label},secIdx)=>{
+      const isCur=secIdx===activeIndex;
+      const totalLetters=label.length;
+      if(!isCur || heroP<=0.05){
+        wrap.style.display='none';
+        return;
+      }
+      wrap.style.display='flex';
+      letters.forEach((letEl,lIdx)=>{
+        if(reduced.matches){
+          letEl.style.opacity='1';
+          letEl.style.transform='none';
+          return;
+        }
+        const arriveProgress=clamp((heroP - (lIdx/totalLetters)*0.45)/0.55);
+        const startX=(totalLetters-lIdx)*18 + 40;
+        const curX=(1-arriveProgress)*startX;
+        const curY=(1-arriveProgress)*((lIdx%2===0?-1:1)*14);
+        const curRot=(1-arriveProgress)*((lIdx%2===0?25:-25));
+        const curScale=0.4 + arriveProgress*0.6;
+        const curOp=arriveProgress;
+        const curBlur=(1-arriveProgress)*6;
+        letEl.style.transform=`translate3d(${curX}px,${curY}px,0) rotate(${curRot}deg) scale(${curScale})`;
+        letEl.style.opacity=String(curOp);
+        letEl.style.filter=curBlur>0.2?`blur(${curBlur}px)`:'none';
+      });
     });
   }
   let pending=false;
