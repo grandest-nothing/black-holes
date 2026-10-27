@@ -68,5 +68,10 @@
   document.body.appendChild(cards);
   const exploration = document.createElement('script');
   exploration.src = 'exploration.js';
+  exploration.onload = () => {
+    const portals = document.createElement('script');
+    portals.src = 'wormhole-ends.js';
+    document.body.appendChild(portals);
+  };
   document.body.appendChild(exploration);
 })();
