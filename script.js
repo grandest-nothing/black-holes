@@ -3,6 +3,18 @@ const cue=document.querySelector('.scroll-cue');
 const backToSurface=document.getElementById('backToSurface');
 const links=[...document.querySelectorAll('.links a')];
 const sections=[...document.querySelectorAll('main section[id]')];
+const revealItems=[...document.querySelectorAll('.reveal')];
+
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+
+revealItems.forEach(el=>revealObserver.observe(el));
 
 const setActive=()=>{
   const y=scrollY+120;
