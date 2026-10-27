@@ -1,7 +1,7 @@
 (() => {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.9';
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:1';
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const style = document.createElement('style');
@@ -20,7 +20,7 @@
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     seed = 7341;
-    stars = Array.from({length: Math.min(850, Math.round(w*h/2100))}, () => ({x:rand(), y:rand(), z:.2+rand()*.8, r:.3+rand()*.65, a:.1+rand()*.34, phase:rand()*6.283}));
+    stars = Array.from({length: Math.min(850, Math.round(w*h/2100))}, () => ({x:rand(), y:rand(), z:.2+rand()*.8, r:.35+rand()*.7, a:.14+rand()*.38, phase:rand()*6.283}));
     lastBoxes = -Infinity;
   }
   const wrap = (n, size) => ((n % size) + size) % size;
@@ -30,7 +30,7 @@
     const dt = lastFrame ? Math.min((ms-lastFrame)/1000, .08) : 0;
     lastFrame = ms;
     if (!motion.matches) time += dt;
-    scroll += (window.scrollY-scroll) * (motion.matches ? 1 : .045);
+    scroll += (window.scrollY-scroll) * (motion.matches ? 1 : .055);
     if (ms-lastBoxes > 180 || motion.matches) {
       boxes = copy.map(el => el.getBoundingClientRect()).filter(b => b.width && b.bottom > 0 && b.top < h);
       lastBoxes = ms;
@@ -44,8 +44,10 @@
     const shadow = scale*.078;
     ctx.clearRect(0,0,w,h);
     for (const s of stars) {
-      let x = wrap(s.x*(w+80) + time*(.15+s.z*.45), w+80)-40;
-      let y = wrap(s.y*(h+100) + time*(.08+s.z*.2) - scroll*(.025+s.z*.045), h+100)-50;
+      const floatX=motion.matches?0:Math.sin(time*.14+s.phase)*1.4*s.z;
+      const floatY=motion.matches?0:Math.cos(time*.11+s.phase)*s.z;
+      let x = wrap(s.x*(w+80) + time*(.3+s.z*.8)+floatX, w+80)-40;
+      let y = wrap(s.y*(h+100) + time*(.16+s.z*.35)+floatY - scroll*(.035+s.z*.06), h+100)-50;
       const dx=x-cx, dy=y-cy, distance=Math.hypot(dx,dy);
       const strength = influence * Math.pow(Math.max(0,1-distance/Math.max(1,radius)),2);
       let angle=Math.atan2(dy,dx);
@@ -53,7 +55,8 @@
       const r=distance+strength*scale*.035;
       x=cx+Math.cos(angle)*r; y=cy+Math.sin(angle)*r;
       if (influence>.1 && Math.hypot(x-cx,y-cy)<shadow) continue;
-      let alpha=s.a;
+      const twinkle=motion.matches?1:.94+.06*Math.sin(time*(.4+s.z*.2)+s.phase);
+      let alpha=s.a*twinkle;
       if (boxes.some(q => x>q.left-16 && x<q.right+16 && y>q.top-12 && y<q.bottom+12)) alpha *= .16;
       ctx.strokeStyle=ctx.fillStyle=`rgba(188,205,224,${alpha})`;
       if (strength>.08) {
