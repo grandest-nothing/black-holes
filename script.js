@@ -12,9 +12,21 @@
   document.head.appendChild(heroOverrides);
 
   const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+  const cue = document.querySelector('.scroll-cue');
+  const backToSurface = document.getElementById('backToSurface');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+    if (cue && backToSurface) {
+      const cueRect = cue.getBoundingClientRect();
+      const cueGone = cueRect.bottom < 70;
+      backToSurface.classList.toggle('is-visible', cueGone);
+      backToSurface.setAttribute('aria-hidden', cueGone ? 'false' : 'true');
+      backToSurface.setAttribute('tabindex', cueGone ? '0' : '-1');
+    }
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
