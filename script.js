@@ -16,21 +16,20 @@
   const backToSurface = document.getElementById('backToSurface');
   const logoIcon = document.querySelector('.logo svg');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  let iconShift = 0;
 
   const updateIconPosition = () => {
     if (!nav || !backToSurface || !logoIcon) return;
     if (!backToSurface.classList.contains('is-visible') || reducedMotion.matches) {
-      iconShift = 0;
       logoIcon.style.transform = '';
+      nav.style.setProperty('--icon-shift', '0px');
       return;
     }
-    const navRect = nav.getBoundingClientRect();
     const buttonRect = backToSurface.getBoundingClientRect();
     const iconRect = logoIcon.getBoundingClientRect();
     const iconCenterX = iconRect.left + iconRect.width / 2;
     const targetCenterX = buttonRect.left - 14;
-    iconShift = targetCenterX - iconCenterX;
+    const iconShift = targetCenterX - iconCenterX;
+    nav.style.setProperty('--icon-shift', `${iconShift}px`);
     logoIcon.style.transform = `translate3d(${iconShift}px,0,0)`;
   };
 
@@ -45,19 +44,22 @@
       backToSurface.setAttribute('tabindex', cueGone ? '0' : '-1');
       if (cueGone !== wasVisible) {
         if (cueGone) {
-          nav.classList.add('surface-returning');
-          setTimeout(() => nav.classList.remove('surface-returning'), 900);
+          updateIconPosition();
+          nav.classList.remove('surface-collide');
+          void nav.offsetWidth;
+          nav.classList.add('surface-collide');
+          setTimeout(() => nav.classList.remove('surface-collide'), 1000);
+        } else {
+          logoIcon.style.transform = '';
+          nav.style.setProperty('--icon-shift', '0px');
         }
-        updateIconPosition();
       }
     }
   };
 
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => {
-    updateIconPosition();
-  }, { passive: true });
+  window.addEventListener('resize', updateIconPosition, { passive: true });
   reducedMotion.addEventListener('change', updateIconPosition);
 
   const io = new IntersectionObserver((entries) => {

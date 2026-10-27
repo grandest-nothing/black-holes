@@ -11,11 +11,11 @@ a{color:inherit;text-decoration:none}
 .nav.scrolled{background:rgba(10,10,14,.55);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border-color:var(--line);padding:.6rem 0}
 .nav__inner{max-width:1200px;margin:auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;position:relative}
 .logo{display:flex;align-items:center;gap:.7rem;font-weight:900;letter-spacing:-.02em;text-transform:uppercase;font-size:1.1rem}
-.logo svg{transition:transform .85s cubic-bezier(.22,1.35,.32,1);will-change:transform}
-.nav.surface-returning .logo svg{animation:logo-approach .9s cubic-bezier(.22,1.35,.32,1)}
-.nav.surface-returning .back-to-surface{animation:button-approach .9s cubic-bezier(.22,1.35,.32,1)}
-@keyframes logo-approach{0%{transform:translate3d(0,0,0) scale(1)}38%{transform:translate3d(calc(var(--icon-shift,0px) * .68),-7px,0) scale(1.13)}68%{transform:translate3d(calc(var(--icon-shift,0px) * .95),4px,0) scale(.97)}100%{transform:translate3d(var(--icon-shift,0px),0,0) scale(1)}}
-@keyframes button-approach{0%{transform:translate(-50%,-50%) translateY(14px) scale(.9)}38%{transform:translate(-50%,-50%) translateY(-7px) scale(1.08)}68%{transform:translate(-50%,-50%) translateY(4px) scale(.98)}100%{transform:translate(-50%,-50%) translateY(0) scale(1)}}
+.logo svg{transition:transform .8s cubic-bezier(.2,.9,.25,1);will-change:transform}
+.nav.surface-collide .logo svg{animation:icon-collide .95s cubic-bezier(.2,.9,.25,1)}
+.nav.surface-collide .back-to-surface{animation:button-collide .95s cubic-bezier(.2,.9,.25,1)}
+@keyframes icon-collide{0%{transform:translate3d(0,0,0) scale(1)}46%{transform:translate3d(calc(var(--icon-shift,0px) + 7px),0,0) scale(1.08)}64%{transform:translate3d(calc(var(--icon-shift,0px) - 5px),0,0) scale(.96)}82%{transform:translate3d(calc(var(--icon-shift,0px) + 2px),0,0) scale(1.02)}100%{transform:translate3d(var(--icon-shift,0px),0,0) scale(1)}}
+@keyframes button-collide{0%{transform:translate(-50%,-50%) translateX(10px) scale(.94)}46%{transform:translate(-50%,-50%) translateX(-7px) scale(1.07)}64%{transform:translate(-50%,-50%) translateX(5px) scale(.97)}82%{transform:translate(-50%,-50%) translateX(-2px) scale(1.01)}100%{transform:translate(-50%,-50%) translateX(0) scale(1)}}
 .links{display:flex;gap:2rem}
 .links a{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);position:relative;transition:color .3s}
 .links a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
@@ -51,8 +51,8 @@ a{color:inherit;text-decoration:none}
 .reveal{opacity:0;transform:translateY(48px) scale(.98);filter:blur(8px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
 .reveal.in{opacity:1;transform:none;filter:none}
 .reveal[data-delay="1"]{transition-delay:.1s}.reveal[data-delay="2"]{transition-delay:.2s}.reveal[data-delay="3"]{transition-delay:.3s}.reveal[data-delay="4"]{transition-delay:.4s}
-@media(max-width:860px){.stats,.grid,.grid--4{grid-template-columns:1fr}.links{gap:1rem}.links a{font-size:.7rem;letter-spacing:.06em}.logo span{display:none}.section{padding:6rem 1.5rem}.back-to-surface{position:static;transform:none;order:3;margin-left:auto}.back-to-surface.is-visible{transform:none}.back-to-surface span{display:none}.back-to-surface{padding:.35rem}.logo svg{transition:none}.nav.surface-returning .logo svg{animation:none}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;filter:none;transition:none}.disk{animation:none}.back-to-surface{transition:none}.logo svg{transition:none}.nav.surface-returning .logo svg,.nav.surface-returning .back-to-surface{animation:none}}
+@media(max-width:860px){.stats,.grid,.grid--4{grid-template-columns:1fr}.links{gap:1rem}.links a{font-size:.7rem;letter-spacing:.06em}.logo span{display:none}.section{padding:6rem 1.5rem}.back-to-surface{position:static;transform:none;order:3;margin-left:auto}.back-to-surface.is-visible{transform:none}.back-to-surface span{display:none}.back-to-surface{padding:.35rem}.logo svg{transition:none}.nav.surface-collide .logo svg{animation:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;filter:none;transition:none}.disk{animation:none}.back-to-surface{transition:none}.logo svg{transition:none}.nav.surface-collide .logo svg,.nav.surface-collide .back-to-surface{animation:none}}
 #exploration .cosmos-status{position:absolute;width:1px;height:1px;padding:0;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 #exploration .cosmos-note{display:none}
 #anatomy .card .anatomy-title,#types .card .type-title{background:linear-gradient(90deg,var(--text),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
