@@ -57,5 +57,10 @@
   document.body.appendChild(starfield);
   const cards = document.createElement('script');
   cards.src = 'cards.js';
+  cards.onload = () => {
+    const fluid = document.createElement('script');
+    fluid.src = 'fluid-cursor.js';
+    document.body.appendChild(fluid);
+  };
   document.body.appendChild(cards);
 })();
