@@ -66,9 +66,9 @@ The page starts in `index.html`. The main loader is `script.js`, with dedicated 
 
 </details>
 
-## Created by Rodox
-
-[MEET THE CREATOR](https://www.linkedin.com/in/rodolfo-ramosgn/) · [INSTAGRAM](https://www.instagram.com/grandest__nothing)
-
+<p align="center">Created by Rodox</p>
+<h4 align="center">
+<a href="https://www.linkedin.com/in/rodolfo-ramosgn/">[LINKEDIN]</a> · <a href="https://www.instagram.com/grandest__nothing">[INSTAGRAM]</a> 
+</h4>
 
 <p align="center">BUILT WITH CURIOSITY AND CREATIVITY</p>
