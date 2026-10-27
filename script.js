@@ -55,4 +55,7 @@
   const starfield = document.createElement('script');
   starfield.src = 'starfield.js';
   document.body.appendChild(starfield);
+  const cards = document.createElement('script');
+  cards.src = 'cards.js';
+  document.body.appendChild(cards);
 })();
