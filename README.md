@@ -9,12 +9,13 @@
 
 <p align="center">An interactive journey through darkness, light, and the limits of what we know</p>
 
-## Take the first step into the void
+<div align="center">
+<h2>Take the first step into the void</h2> 
 
 This is not a page you simply read. It is an experience you move through
 
 Hover, drag, and explore. Every interaction opens another layer of the universe
-
+</div>
 <p align="center">
   <img src="assets/readme-journey.svg" alt="Four illustrated waypoints through the experience: Overview, Anatomy, Types, and Exploration" width="100%">
 </p>
@@ -37,11 +38,6 @@ Move from stellar black holes to the giants at the hearts of galaxies. Meet exam
 ### 04 / Exploration
 
 Black holes are only part of the story. Drag a carousel of glowing objects through the space between two wormhole mouths
-
-
-## Built to feel connected
-
-## A visual experience, with scientific context
 
 ## Behind the experience
 
@@ -66,7 +62,7 @@ The page starts in `index.html`. The main loader is `script.js`, with dedicated 
 
 </details>
 
-<p align="center">Created by Rodox</p>
+<p align="center">CREATED BY RODOX</p>
 <h4 align="center">
 <a href="https://www.linkedin.com/in/rodolfo-ramosgn/">[LINKEDIN]</a> · <a href="https://www.instagram.com/grandest__nothing">[INSTAGRAM]</a> 
 </h4>
