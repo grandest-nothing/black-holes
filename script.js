@@ -66,4 +66,7 @@
     document.body.appendChild(types);
   };
   document.body.appendChild(cards);
+  const exploration = document.createElement('script');
+  exploration.src = 'exploration.js';
+  document.body.appendChild(exploration);
 })();
