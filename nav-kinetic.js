@@ -128,30 +128,54 @@
     }
     const stackTopBase=96;
     const stackGap=22;
+    const bottomEntryY=vh - 54;
     railItems.forEach(({link},idx)=>{
       const sec=items[idx].section;
       const secTop=sec.offsetTop;
       const secHeight=sec.offsetHeight;
-      const rawNaturalY=secTop-y+vh*0.35;
       const topPinnedY=stackTopBase + idx*stackGap;
-      const bottomEntryY=vh - 60;
-      const targetY=Math.max(topPinnedY,Math.min(bottomEntryY,rawNaturalY));
-      const distToBH=Math.abs(targetY-blackHoleCenterY);
-      const isPinned=rawNaturalY<=topPinnedY;
-      const isPastActive=idx<activeIndex;
+      const startTrigger=secTop - vh*0.88;
+      const endTrigger=secTop + secHeight*0.25;
+      const travelProgress=clamp((y-startTrigger)/Math.max(1,endTrigger-startTrigger));
+      const targetY=bottomEntryY - travelProgress*(bottomEntryY-topPinnedY);
+      const isPinned=targetY<=topPinnedY+1;
       const isCurrent=idx===activeIndex;
+      const distToBH=Math.abs(targetY-blackHoleCenterY);
       const proximity=clamp(1-distToBH/110);
+      let isVisible=true;
+      if(!isPinned){
+        if(travelProgress<=0.02){
+          isVisible=false;
+        }else{
+          const prevItem=items[idx-1];
+          if(prevItem){
+            const prevSecTop=prevItem.section.offsetTop;
+            const prevStartTrigger=prevSecTop - vh*0.88;
+            const prevEndTrigger=prevSecTop + prevItem.section.offsetHeight*0.25;
+            const prevTravel=clamp((y-prevStartTrigger)/Math.max(1,prevEndTrigger-prevStartTrigger));
+            if(prevTravel<0.45){
+              isVisible=false;
+            }
+          }
+        }
+      }
+      if(!isVisible){
+        link.style.display='none';
+        return;
+      }
+      link.style.display='inline-flex';
       let op=0.28;
       let scale=0.84;
       if(isCurrent){
         op=Math.max(0.85,0.45+proximity*0.55);
         scale=Math.max(1.0,0.92+proximity*0.22);
       }else if(isPinned){
-        op=isPastActive?0.32:0.42;
+        op=idx<activeIndex?0.32:0.42;
         scale=0.82;
       }else{
-        op=0.22+proximity*0.4;
-        scale=0.8+proximity*0.15;
+        const fadeEntry=clamp(travelProgress/0.18);
+        op=(0.28+proximity*0.45)*fadeEntry;
+        scale=0.8+proximity*0.18;
       }
       if(reduced.matches){
         link.style.transform=`translate3d(0,${targetY}px,0)`;
