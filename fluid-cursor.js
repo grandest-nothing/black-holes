@@ -19,14 +19,14 @@
   function warp(){
     for(const [el,s]of states){
       if(!el.isConnected){s.filter.remove();states.delete(el);continue;}
-      const r=el.getBoundingClientRect();const margin=75;
+      const r=el.getBoundingClientRect();const margin=37.5;
       if(!r.width||!r.height||r.bottom<0||r.top>h||point.x<r.left-margin||point.x>r.right+margin||point.y<r.top-margin||point.y>r.bottom+margin){if(s.active){el.style.filter=s.old;s.active=false;}continue;}
       const pad=48,bw=r.width,bh=r.height,px=point.x-r.left,py=point.y-r.top;
       for(const e of [s.filter,s.image,s.d]){e.setAttribute('x',-pad);e.setAttribute('y',-pad);e.setAttribute('width',bw+pad*2);e.setAttribute('height',bh+pad*2);}
       const data=mc.createImageData(map.width,map.height);
       for(let j=0;j<map.height;j++)for(let i=0;i<map.width;i++){
         const dx=i/(map.width-1)*(bw+pad*2)-pad-px,dy=j/(map.height-1)*(bh+pad*2)-pad-py;
-        const f=Math.exp(-(dx*dx+dy*dy)/(72.5*72.5*.65));
+        const f=Math.exp(-(dx*dx+dy*dy)/(36.25*36.25*.65));
         const k=(j*map.width+i)*4;
         data.data[k]=Math.max(0,Math.min(255,128+(dx*.65-dy*.12)*f/150*255));
         data.data[k+1]=Math.max(0,Math.min(255,128+(dy*.65+dx*.12)*f/150*255));data.data[k+2]=128;data.data[k+3]=255;
