@@ -27,15 +27,6 @@
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
   const links = [...document.querySelectorAll('.links a')];
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
-      }
-    });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
-
   links.forEach((l) => l.addEventListener('click', (ev) => {
     const t = document.querySelector(l.getAttribute('href'));
     if (t) { ev.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
@@ -72,6 +63,9 @@
     const portals = document.createElement('script');
     portals.src = 'wormhole-ends.js';
     document.body.appendChild(portals);
+    const navKinetic = document.createElement('script');
+    navKinetic.src = 'nav-kinetic.js';
+    document.body.appendChild(navKinetic);
   };
   document.body.appendChild(exploration);
 })();
