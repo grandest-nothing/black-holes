@@ -17,6 +17,16 @@
   control.value='0'; control.setAttribute('aria-label','Page scroll position');
   control.setAttribute('aria-controls','top');
   rail.appendChild(control);
+  const footer=document.querySelector('.footer');
+  const signature=footer?.lastElementChild;
+  let footerSlot=null;
+  if(signature){
+    signature.classList.add('bh-footer-signature');
+    footerSlot=document.createElement('span');
+    footerSlot.className='bh-footer-slot';
+    footerSlot.setAttribute('aria-hidden','true');
+    signature.prepend(footerSlot);
+  }
   const style=document.createElement('style');
   style.textContent=`
     html.bh-scrollbar { scrollbar-width: none; }
@@ -31,6 +41,8 @@
     .bh-rail:focus-within::before { background:rgba(255,180,110,.7); box-shadow:0 0 5px #ff8a3d55; }
     .bh-rail input::-webkit-slider-thumb { -webkit-appearance:none; width:44px; height:24px; }
     .bh-rail input::-moz-range-thumb { width:44px; height:24px; border:0; }
+    .footer .bh-footer-signature { display:inline-flex; align-items:center; gap:.65rem; max-width:100%; }
+    .bh-footer-slot { display:inline-block; width:3.75em; aspect-ratio:1.75/1; flex:0 0 3.75em; pointer-events:none; }
     @media(max-width:860px) { .bh-placeholder { width:106%; margin:0 -3%; } }
   `;
   document.head.appendChild(style);
@@ -39,6 +51,7 @@
   document.body.append(portal,rail);
   document.documentElement.classList.add('bh-scrollbar');
   const clamp=n=>Math.max(0,Math.min(1,n));
+  const mix=(a,b,t)=>a+(b-a)*t;
   let pending=false;
   function update(){
     pending=false;
@@ -60,16 +73,34 @@
     let x=box.left+(targetX-box.left)*p;
     let top=(startY-y)+(targetY-(startY-y))*p;
     let s=scale;
+    let opacity=p>=1?1:Number(getComputedStyle(visual).opacity);
     if (reduced.matches && p>0 && p<1) { x=box.left;top=box.top;s=1; }
+    let docking=0;
+    if(footerSlot&&p>=1){
+      const destination=footerSlot.getBoundingClientRect();
+      const travel=Math.min(max-boundary,Math.max(180,Math.min(420,innerHeight*.38)));
+      const dockStart=max-Math.max(1,travel);
+      const raw=clamp((y-dockStart)/Math.max(1,max-dockStart));
+      docking=reduced.matches?(raw>=1?1:0):raw*raw*(3-2*raw);
+      if(destination.width>0&&destination.height>0){
+        const dockScale=destination.width/width;
+        const dockTop=destination.top+(destination.height-height*dockScale)/2;
+        x=mix(x,destination.left,docking);
+        top=mix(top,dockTop,docking);
+        s=mix(s,dockScale,docking);
+        opacity*=mix(1,Number(getComputedStyle(footer).opacity),docking);
+      }
+    }
     portal.style.width=width+'px';portal.style.height=height+'px';
     portal.style.transform=`translate3d(${x}px,${top}px,0) scale(${s})`;
     portal.classList.toggle('is-compact',p>=1);
-    portal.style.opacity=p>=1?'1':getComputedStyle(visual).opacity;
+    portal.style.opacity=String(opacity);
     rail.style.opacity=String(p);
     rail.style.pointerEvents=p>=1?'auto':'none';
     control.tabIndex=p>=1?0:-1;
     control.value=String(Math.round(progress*10000));
     control.setAttribute('aria-valuetext',Math.round(progress*100)+' percent');
+    if(docking>0&&footer?.getAnimations().some(animation=>animation.playState==='running'))schedule();
   }
   function schedule(){if(!pending){pending=true;requestAnimationFrame(update);}}
   control.addEventListener('input',()=>{
@@ -81,6 +112,7 @@
   window.addEventListener('resize',schedule,{passive:true});
   reduced.addEventListener('change',schedule);
   new ResizeObserver(schedule).observe(document.body);
+  if(footer){new ResizeObserver(schedule).observe(footer);footer.addEventListener('transitionrun',schedule);footer.addEventListener('transitionend',schedule);}
   document.fonts?.ready.then(schedule);
   const start=performance.now();
   function revealTick(t){update();if(t-start<1800)requestAnimationFrame(revealTick);}
