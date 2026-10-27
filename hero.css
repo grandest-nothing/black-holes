@@ -3,7 +3,7 @@
 .hero h1{font-size:clamp(3.4rem,8.5vw,8.5rem);line-height:.9;margin-bottom:0}
 .hero h1 span{display:block}
 .hero .accent{font-style:normal;background:linear-gradient(100deg,#ffb36b,var(--accent) 45%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .lead{margin:1.75rem 0 2.5rem;max-width:34ch;text-align:left}
+.hero .lead{margin:1.75rem 0 2.5rem;max-width:34ch;text-align:left;padding-left:clamp(.68rem,1.7vw,1.7rem)}
 .hero__visual{position:relative;z-index:1;display:flex;justify-content:center}
 .bh{position:relative;width:min(100%,680px);aspect-ratio:1;perspective:1200px;animation:bob 6s ease-in-out infinite;will-change:transform}
 @keyframes bob{0%,100%{transform:translateY(-16px)}50%{transform:translateY(16px)}}
@@ -21,7 +21,7 @@
 .scroll-cue__icon{animation:cueicon 2.4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,138,61,.6))}
 @keyframes cue{0%,100%{opacity:.45}50%{opacity:1}}
 @keyframes cueicon{0%,100%{transform:translateY(0) scale(.9)}50%{transform:translateY(8px) scale(1.1)}}
-@media(max-width:860px){.hero{grid-template-columns:1fr;gap:0;padding-top:6.5rem;padding-bottom:6rem}.hero__visual{margin-top:1rem}.bh{width:min(94%,440px)}.bh.bh--gl{width:106%;margin:0 -3%}.hero h1{font-size:clamp(3rem,15vw,5.5rem)}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;gap:0;padding-top:6.5rem;padding-bottom:6rem}.hero__visual{margin-top:1rem}.bh{width:min(94%,440px)}.bh.bh--gl{width:106%;margin:0 -3%}.hero h1{font-size:clamp(3rem,15vw,5.5rem)}.hero .lead{padding-left:clamp(.6rem,3vw,1.1rem)}}
 @media(prefers-reduced-motion:reduce){.bh,.bh__disk,.scroll-cue,.scroll-cue__icon{animation:none}}
 .footer{position:relative;z-index:96;pointer-events:none}
 .footer .footer-platform{pointer-events:auto}
