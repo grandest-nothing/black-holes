@@ -14,19 +14,51 @@
   const nav = document.getElementById('nav');
   const cue = document.querySelector('.scroll-cue');
   const backToSurface = document.getElementById('backToSurface');
+  const logoIcon = document.querySelector('.logo svg');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let iconShift = 0;
+
+  const updateIconPosition = () => {
+    if (!nav || !backToSurface || !logoIcon) return;
+    if (!backToSurface.classList.contains('is-visible') || reducedMotion.matches) {
+      iconShift = 0;
+      logoIcon.style.transform = '';
+      return;
+    }
+    const navRect = nav.getBoundingClientRect();
+    const buttonRect = backToSurface.getBoundingClientRect();
+    const iconRect = logoIcon.getBoundingClientRect();
+    const iconCenterX = iconRect.left + iconRect.width / 2;
+    const targetCenterX = buttonRect.left - 14;
+    iconShift = targetCenterX - iconCenterX;
+    logoIcon.style.transform = `translate3d(${iconShift}px,0,0)`;
+  };
+
   const onScroll = () => {
     nav.classList.toggle('scrolled', window.scrollY > 24);
     if (cue && backToSurface) {
       const cueRect = cue.getBoundingClientRect();
       const cueGone = cueRect.bottom < 70;
+      const wasVisible = backToSurface.classList.contains('is-visible');
       backToSurface.classList.toggle('is-visible', cueGone);
       backToSurface.setAttribute('aria-hidden', cueGone ? 'false' : 'true');
       backToSurface.setAttribute('tabindex', cueGone ? '0' : '-1');
+      if (cueGone !== wasVisible) {
+        if (cueGone) {
+          nav.classList.add('surface-returning');
+          setTimeout(() => nav.classList.remove('surface-returning'), 900);
+        }
+        updateIconPosition();
+      }
     }
   };
+
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    updateIconPosition();
+  }, { passive: true });
+  reducedMotion.addEventListener('change', updateIconPosition);
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
